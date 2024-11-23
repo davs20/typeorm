@@ -734,9 +734,8 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
                     ...relation.inverseJoinColumns,
                 ]
                 for (const joinColumn of allColumns) {
-                    const propertyKey = `${relation.propertyPath}.${
-                        joinColumn.referencedColumn!.propertyPath
-                    }`
+                    const propertyKey = `${relation.propertyPath}.${joinColumn.referencedColumn!.propertyPath
+                        }`
                     replacements[replaceAliasNamePrefix][propertyKey] =
                         joinColumn.databaseName
                 }
@@ -768,14 +767,13 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
                 new RegExp(
                     // Avoid a lookbehind here since it's not well supported
                     `([ =(]|^.{0})` + // any of ' =(' or start of line
-                        // followed by our prefix, e.g. 'tablename.' or ''
-                        `${
-                            replaceAliasNamePrefixes
-                                ? "(" + replaceAliasNamePrefixes + ")"
-                                : ""
-                        }([^ =(),]+)` + // a possible property name: sequence of anything but ' =(),'
-                        // terminated by ' =),' or end of line
-                        `(?=[ =),]|.{0}$)`,
+                    // followed by our prefix, e.g. 'tablename.' or ''
+                    `${replaceAliasNamePrefixes
+                        ? "(" + replaceAliasNamePrefixes + ")"
+                        : ""
+                    }([^ =(),]+)` + // a possible property name: sequence of anything but ' =(),'
+                    // terminated by ' =),' or end of line
+                    `(?=[ =),]|.{0}$)`,
                     "gm",
                 ),
                 (...matches) => {
@@ -858,8 +856,8 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
             ) {
                 const column = this.expressionMap.aliasNamePrefixingEnabled
                     ? this.expressionMap.mainAlias!.name +
-                      "." +
-                      metadata.deleteDateColumn.propertyName
+                    "." +
+                    metadata.deleteDateColumn.propertyName
                     : metadata.deleteDateColumn.propertyName
 
                 const condition = `${this.replacePropertyNames(column)} IS NULL`
@@ -869,8 +867,8 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
             if (metadata.discriminatorColumn && metadata.parentEntityMetadata) {
                 const column = this.expressionMap.aliasNamePrefixingEnabled
                     ? this.expressionMap.mainAlias!.name +
-                      "." +
-                      metadata.discriminatorColumn.databaseName
+                    "." +
+                    metadata.discriminatorColumn.databaseName
                     : metadata.discriminatorColumn.databaseName
 
                 const condition = `${this.replacePropertyNames(
@@ -988,7 +986,7 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
     protected getReturningColumns(): ColumnMetadata[] {
         const columns: ColumnMetadata[] = []
         if (Array.isArray(this.expressionMap.returning)) {
-            ;(this.expressionMap.returning as string[]).forEach(
+            ; (this.expressionMap.returning as string[]).forEach(
                 (columnName) => {
                     if (this.expressionMap.mainAlias!.hasMetadata) {
                         columns.push(
@@ -1014,27 +1012,23 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
                     case "and":
                         return (
                             (index > 0 ? "AND " : "") +
-                            `${
-                                this.connection.options.isolateWhereStatements
-                                    ? "("
-                                    : ""
-                            }${expression}${
-                                this.connection.options.isolateWhereStatements
-                                    ? ")"
-                                    : ""
+                            `${this.connection.options.isolateWhereStatements
+                                ? "("
+                                : ""
+                            }${expression}${this.connection.options.isolateWhereStatements
+                                ? ")"
+                                : ""
                             }`
                         )
                     case "or":
                         return (
                             (index > 0 ? "OR " : "") +
-                            `${
-                                this.connection.options.isolateWhereStatements
-                                    ? "("
-                                    : ""
-                            }${expression}${
-                                this.connection.options.isolateWhereStatements
-                                    ? ")"
-                                    : ""
+                            `${this.connection.options.isolateWhereStatements
+                                ? "("
+                                : ""
+                            }${expression}${this.connection.options.isolateWhereStatements
+                                ? ")"
+                                : ""
                             }`
                         )
                 }
@@ -1124,6 +1118,9 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
                 return `NOT(${this.createWhereConditionExpression(
                     condition.condition,
                 )})`
+
+            case "contains":
+                return `CONTAINS("${condition.parameters[0]}", '"${condition.parameters[1]}"', FUZZY(0.9, 'similarCalculationMode=search, fuzzySubstringMatch=anywhere,searchMode=alphanum') )`
             case "brackets":
                 return `${this.createWhereConditionExpression(
                     condition.condition,
@@ -1180,7 +1177,7 @@ export abstract class QueryBuilder<Entity extends ObjectLiteral> {
                         if (
                             cte.queryBuilder.expressionMap.selects.length &&
                             cte.options.columnNames.length !==
-                                cte.queryBuilder.expressionMap.selects.length
+                            cte.queryBuilder.expressionMap.selects.length
                         ) {
                             throw new TypeORMError(
                                 `cte.options.columnNames length (${cte.options.columnNames.length}) doesn't match subquery select list length ${cte.queryBuilder.expressionMap.selects.length} (CTE: ${cte.alias})`,
